@@ -4,8 +4,9 @@ import (
 	"context"
 	"grpc/models"
 	"log"
+	"net"
 
-	"github.com/labstack/gommon/log"
+	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -39,4 +40,22 @@ func (GarageServer) Add(ctx context.Context, params *models.AddGarage) (*emptypb
 	log.Println("GarageServer.Add", garage.String(), "to", userId)
 
 	return new(emptypb.Empty), nil
+}
+
+func main() {
+	srv := grpc.NewServer()
+
+	var garageServ GarageServer
+
+	models.RegisterGaragesServer(srv, garageServ)
+
+	log.Println("Starting RPC Server at", "localhost:9002")
+
+	listen, err := net.Listen("tcp", "localhost:9002")
+
+	if err != nil {
+		log.Fatalf("could not listen to localhost:9002: %v", err)
+	}
+
+	log.Fatal(srv.Serve(listen))
 }
