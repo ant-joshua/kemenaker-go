@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+
+import "google/protobuf/empty.proto";
+
+package models;
+
+option go_package = "./models";
+
+message GarageCoordinate{
+    float latitude = 1;
+    float longitude = 2;
+}
+
+message Garage{
+    string id = 1;
+    string name = 2;
+    GarageCoordinate coordinate = 3;
+}
+
+message GarageList{
+    repeated Garage list = 1;
+}
+
+message GarageListByUser{
+    map<string, GarageList> list = 1;
+}
+
+message GarageID{
+    string id = 1;
+}
+
+message AddGarage{
+    string id = 1;
+    Garage garage = 2;
+}
+
+service Garages{
+    rpc List(GarageID) returns (GarageList) {}
+    rpc Add(AddGarage) returns (google.protobuf.Empty) {}
+}
