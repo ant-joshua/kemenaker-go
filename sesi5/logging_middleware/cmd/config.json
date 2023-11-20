@@ -1,0 +1,7 @@
+{
+    "appName": "belajar_config",
+    "port": 3000,
+    "server": {
+        "port": 3000
+    }
+}
